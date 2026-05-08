@@ -13,11 +13,11 @@ def _build_database_url() -> str:
     db   = os.getenv("PG_DATABASE", "postgres")
     user = os.getenv("PG_USER", "postgres")
     pw   = os.getenv("PG_PASSWORD", "")
-    return f"postgresql://{user}:{pw}@{host}:{port}/{db}"
+    return f"postgresql://{user}:{pw}@{host}:{port}/{db}?sslmode=require"
 
 DATABASE_URL = _build_database_url()
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, connect_args={"sslmode": "require"})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
